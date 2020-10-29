@@ -147,7 +147,7 @@ resource "null_resource" "configure" {
   provisioner "remote-exec" {
     inline = [
       "cd /tmp/ocp4-helpernode",
-      "sudo systemctl sotp httpd",
+      "sudo systemctl stop httpd",
       "sudo ansible-playbook -e @vars.yaml tasks/main.yml"
     ]
   }
