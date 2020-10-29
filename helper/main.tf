@@ -128,7 +128,8 @@ resource "null_resource" "configure" {
   provisioner "remote-exec" {
     inline = [
       "set -x",
-      "sudo yum install epel-release -y",
+      # "sudo yum install epel-release -y",
+      "sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm",
       "sudo yum install git ansible genisoimage -y",
       "test -e /tmp/ocp4-helpernode || git clone ${var.binaries["openshift_helper"]} /tmp/ocp4-helpernode",
       "curl -sL -o /tmp/govc.gz ${var.binaries["govc"]}",
@@ -146,6 +147,7 @@ resource "null_resource" "configure" {
   provisioner "remote-exec" {
     inline = [
       "cd /tmp/ocp4-helpernode",
+      "sudo systemctl sotp httpd",
       "sudo ansible-playbook -e @vars.yaml tasks/main.yml"
     ]
   }
